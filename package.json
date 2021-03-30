@@ -1,0 +1,18 @@
+{
+  "name": "g-pharm-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Rafaelmaiden/g-pharm-backend.git",
+  "author": "edmarques11 <edmarquessantosdelima@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "standard": "^16.0.3"
+  }
+}
