@@ -1,13 +1,10 @@
-const { Router } = require('express')
-const { TestController } = require('./controllers/TestController')
+module.exports = app => {
+  const url = '/api'
 
-const router = Router()
+  app.use(`${url}/users`, require('./controllers/users'))
 
-const testController = new TestController()
-
-router.get('/', (request, response) => {
-  const data = testController.show()
-  response.status(200).json(data)
-})
-
-module.exports = router
+  // Route invalid
+  app.route('*').get((request, response) => {
+    response.status(404).json({ message: 'Route does not exists!', route: request.url })
+  })
+}
