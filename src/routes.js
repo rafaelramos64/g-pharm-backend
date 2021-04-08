@@ -1,10 +1,11 @@
-module.exports = app => {
-  const url = '/api'
+const { Router } = require('express')
 
-  app.use(`${url}/users`, require('./controllers/users'))
+// Controllers
+const UsersController = require('./controllers/UsersController')
 
-  // Route invalid
-  app.route('*').get((request, response) => {
-    response.status(404).json({ message: 'Route does not exists!', route: request.url })
-  })
-}
+const routes = Router()
+
+// Routes Users
+routes.post('/users', UsersController.save)
+
+module.exports = { routes }

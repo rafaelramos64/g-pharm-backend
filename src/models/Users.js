@@ -1,39 +1,22 @@
-const { Sequelize, DataTypes, Model } = require('sequelize')
-const dbConfig = require('../config/database')
-const sequelize = new Sequelize(dbConfig)
+const { DataTypes, Model } = require('sequelize')
 
-class Users extends Model { }
-
-Users.init({
-  id: {
-    type: DataTypes.STRING,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  created_at: {
-    type: DataTypes.TIME,
-    allowNull: false
-  },
-  updated_at: {
-    type: DataTypes.TIME,
-    allowNull: false
+class Users extends Model {
+  static init (sequelize) {
+    super.init({
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
+    }, {
+      sequelize,
+      modelName: 'Users',
+      tableName: 'users'
+    })
   }
-}, {
-  sequelize,
-  modelName: 'Users',
-  tableName: 'users',
-  timestamps: true,
-  createdAt: true,
-  updatedAt: 'updateTimestamp'
-})
+}
 
 module.exports = { Users }
