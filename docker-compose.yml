@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  pgsql:
+  pgsql-development:
     image: postgres:alpine
     ports:
       - '5432:5432'
@@ -14,5 +14,19 @@ services:
       POSTGRES_PASSWORD: pgpassword
       POSTGRES_DB: g-pharm
 
+  pgsql-test:
+    image: postgres:alpine
+    ports:
+      - '5433:5433'
+    container_name: 'pgsqltest'
+    restart: always
+    volumes:
+      - pg-data-test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: pgusertest
+      POSTGRES_PASSWORD: pgpasswordtest
+      POSTGRES_DB: g-pharm-test
+
 volumes:
   pg-data:
+  pg-data-test:
