@@ -1,5 +1,8 @@
-const { Users } = require('../models/Users')
+const { Users } = require('../models')
+const { UsersServices } = require('../services')
 const yup = require('yup')
+
+const usersServices = new UsersServices(Users)
 
 module.exports = {
   async save (request, response) {
@@ -17,8 +20,22 @@ module.exports = {
       return response.status(400).json({ message: error })
     }
 
-    const user = await Users.create({ name, email })
+    const user = await usersServices.create(name, email)
 
     return response.status(201).json(user)
+  },
+
+  async deleteUser (request, response) {
+    const id = request.params.id
+
+    if (id) {
+      const user = await usersServices.delete(id)
+
+      if (user.error) return response.status(400).json(user)
+
+      return response.status(200).json(user)
+    } else {
+      return response.status(400).json({ message: 'Id is required!' })
+    }
   }
 }
