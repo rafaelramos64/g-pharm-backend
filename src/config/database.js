@@ -1,10 +1,15 @@
+// Config dotenv
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+})
+
 module.exports = {
-  dialect: 'postgres',
-  host: 'localhost',
-  port: '5432',
-  username: 'pguser',
-  password: 'pgpassword',
-  database: 'g-pharm',
+  dialect: process.env.DATABASE_DIALECT,
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABSE_PASSWORD,
+  database: process.env.DATABASE_NAME,
   define: {
     timestamps: true,
     underscored: true
