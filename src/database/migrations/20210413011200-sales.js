@@ -17,13 +17,9 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
-      id_sale: {
+      id_medicines: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
-        allowNull: false,
-        references: {
-          model: 'medicines',
-          key: 'id'
-        }
+        allowNull: false
       },
       id_vendor: {
         type: Sequelize.INTEGER,
