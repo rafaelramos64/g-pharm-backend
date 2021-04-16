@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { routes } = require('./routes/routes')
+const routes = require('./routes')
 require('./database')
 
 const app = express()
@@ -14,6 +14,6 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 })
 
-app.use(routes)
+app.use('/api', routes)
 
 module.exports = { app }
