@@ -6,8 +6,7 @@ class UsersServices {
   async create (name, email) {
     const dataUser = { name, email }
     try {
-      const user = await this.User.create(dataUser)
-      return user
+      return await this.User.create(dataUser)
     } catch (error) {
       console.error(error)
       return error
