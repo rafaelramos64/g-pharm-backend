@@ -8,7 +8,7 @@ class UsersServices {
     try {
       return await this.User.create(dataUser)
     } catch (error) {
-      console.error(error)
+      console.error('at UsersServices', error)
       throw new Error(error)
     }
   }
