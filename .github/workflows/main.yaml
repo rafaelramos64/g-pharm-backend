@@ -14,9 +14,9 @@ jobs:
       postgres:
         image: postgres:10.8
         env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: school_test
+          POSTGRES_USER: pguser
+          POSTGRES_PASSWORD: pgpassword
+          POSTGRES_DB: g-pharm-test
           POSTGRES_PORT: 5432
         ports:
           - 5432:5432
