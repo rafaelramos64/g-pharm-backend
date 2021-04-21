@@ -1,3 +1,8 @@
+// Config dotenv
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+})
+
 const express = require('express')
 const cors = require('cors')
 const routes = require('./routes')
@@ -9,11 +14,6 @@ app.use(express.json())
 
 app.use(cors())
 
-// Config dotenv
-require('dotenv').config({
-  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
-})
-
 app.use('/api', routes)
 
-module.exports = { app }
+module.exports = app

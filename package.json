@@ -6,8 +6,9 @@
   "author": "edmarques11 <edmarquessantosdelima@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
-    "test": "NODE_ENV=test jest --verbose"
+    "test": "NODE_ENV=test jest --verbose --detectOpenHandles"
   },
   "dependencies": {
     "cors": "^2.8.5",

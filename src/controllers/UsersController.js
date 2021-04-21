@@ -20,9 +20,13 @@ module.exports = {
       return response.status(400).json({ message: error })
     }
 
-    const user = await usersServices.create(name, email)
-
-    return response.status(201).json(user)
+    try {
+      await usersServices.create(name, email)
+      return response.status(201).json({ name, email })
+    } catch (error) {
+      console.error('at UserController', error)
+      return response.status(500).json(error)
+    }
   },
 
   async deleteUser (request, response) {
