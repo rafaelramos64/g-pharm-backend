@@ -39,8 +39,8 @@ jobs:
         DATABASE_HOST: localhost
         DATABASE_PORT: 5432
         DATABASE: g-pharm-test
-        DATABASE_USERNAME: test
-        DATABASE_PASSWORD: test
+        DATABASE_USERNAME: pguser
+        DATABASE_PASSWORD: pgpassword
         # DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
     - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
       with:
