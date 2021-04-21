@@ -6,9 +6,12 @@
   "author": "edmarques11 <edmarquessantosdelima@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./src/server.js",
+    "test": "NODE_ENV=test jest --verbose --detectOpenHandles",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "docker-compose-up": "docker-compose up -d",
+    "docker-compose-down": "docker-compose down",
     "dev": "nodemon ./src/server.js",
-    "test": "NODE_ENV=test jest --verbose --detectOpenHandles"
+    "start": "node ./src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
