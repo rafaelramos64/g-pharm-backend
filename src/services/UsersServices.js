@@ -13,6 +13,16 @@ class UsersServices {
     }
   }
 
+  async getAll () {
+    try {
+      return await this.User.findAll({
+        attributes: ['id', 'name', 'email']
+      })
+    } catch (error) {
+      console.error('at UsersServices', error)
+    }
+  }
+
   async delete (id) {
     try {
       return await this.User.destroy({ where: { id } })
