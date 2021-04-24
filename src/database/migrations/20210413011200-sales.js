@@ -18,8 +18,12 @@ module.exports = {
         allowNull: false
       },
       id_medicines: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
-        allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'medicines',
+          key: 'id'
+        }
       },
       id_vendor: {
         type: Sequelize.INTEGER,
