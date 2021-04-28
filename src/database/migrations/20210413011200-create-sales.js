@@ -2,20 +2,30 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('users', {
+    return await queryInterface.createTable('sales', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
       },
-      name: {
-        type: Sequelize.STRING,
+      sale_price: {
+        type: Sequelize.FLOAT,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
+      sale_date: {
+        type: Sequelize.DATE,
         allowNull: false
+      },
+      vendor_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'vendors',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       created_at: {
         type: Sequelize.DATE,
@@ -29,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('users')
+    return await queryInterface.dropTable('sales')
   }
 }

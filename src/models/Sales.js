@@ -18,14 +18,6 @@ class Sales extends Model {
           model: 'medicines',
           key: 'id'
         }
-      },
-      id_vendor: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
       }
     }, {
       sequelize,
@@ -35,14 +27,15 @@ class Sales extends Model {
   }
 
   static associate (models) {
-    this.belongsTo(models.Users, {
-      foreignKey: 'id_vendor',
-      as: 'vendor_sale'
+    this.hasOne(models.Vendors, {
+      foreignKey: 'vendor_id',
+      as: 'sale_vendor'
     })
+
     this.belongsToMany(models.Medicines, {
-      foreignKey: 'id_medicines',
-      as: 'medicines_sale',
-      through: ''
+      foreignKey: 'medicines_id',
+      through: 'sales_medicines',
+      as: 'medicines'
     })
   }
 }

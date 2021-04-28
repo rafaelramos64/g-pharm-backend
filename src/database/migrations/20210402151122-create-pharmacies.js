@@ -17,14 +17,9 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      id_admin: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
+      password: {
+        type: Sequelize.STRING
       },
-
       created_at: {
         type: Sequelize.DATE,
         allowNull: false

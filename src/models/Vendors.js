@@ -1,15 +1,16 @@
-const { Model, DataTypes } = require('sequelize')
+const { DataTypes, Model } = require('sequelize')
 
-class Pharmacies extends Model {
+class Vendors extends Model {
   static init (sequelize) {
     super.init({
       name: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: false
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
       },
       password: {
         type: DataTypes.STRING,
@@ -17,17 +18,17 @@ class Pharmacies extends Model {
       }
     }, {
       sequelize,
-      modelName: 'Pharmacies',
-      tableName: 'pharmacies'
+      modelName: 'Vendors',
+      tableName: 'vendors'
     })
   }
 
   static associate (models) {
-    this.hasMany(models.Vendors, {
+    this.belongsTo(models.Pharmacies, {
       foreignKey: 'pharmacy_id',
-      as: 'parmacie_vendors'
+      as: 'pharmacies_users'
     })
   }
 }
 
-module.exports = { Pharmacies }
+module.exports = { Vendors }

@@ -6,7 +6,7 @@ const API_USER = '/api/users'
 
 describe('Test routes users', () => {
   test('It should add a new user', async () => {
-    const newUser = { name: 'fulano', email: 'fulano@nada.com' }
+    const newUser = { name: 'fulano', email: 'fulano@nada.com', password: 'Edm@rques008' }
 
     const response = await request(app).post(API_USER).send(newUser)
     expect(response.statusCode).toBe(201)

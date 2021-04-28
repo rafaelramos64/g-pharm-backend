@@ -5,9 +5,12 @@ const app = require('../../app')
 const database = require('../../database')
 
 const API_PHARMACY = '/api/pharmacies'
+const API_USER = '/api/users'
 const DEFAULT_PHARMACY = { name: 'Super Pharm', description: 'Farmácia do rémedio mais caro do mundo.' }
+const DEFAULT_USER = { name: 'fulano', email: 'fulano@nada.com', password: 'Edm@rques008', id_admin: 1 }
 beforeAll(async () => {
   await database.sync({ force: true })
+  await request(app).post(API_USER).send(DEFAULT_USER)
   await request(app).post(API_PHARMACY).send(DEFAULT_PHARMACY)
 })
 

@@ -1,9 +1,11 @@
-const { UsersServices } = require('./UsersServices')
+const { VendorsServices } = require('./VendorsServices')
 const { PharmaciesServices } = require('./PharmaciesServices')
 const { SalesServices } = require('./SalesServices')
+const { MedicinesSales } = require('./MedicinesServices')
 
 module.exports = {
-  UsersServices,
+  VendorsServices,
   PharmaciesServices,
-  SalesServices
+  SalesServices,
+  MedicinesSales
 }

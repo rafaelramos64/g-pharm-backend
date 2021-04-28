@@ -2,36 +2,35 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('sales', {
+    return await queryInterface.createTable('vendors', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
       },
-      sale_price: {
-        type: Sequelize.FLOAT,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false
       },
-      sale_date: {
-        type: Sequelize.DATE,
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING,
         allowNull: false
       },
-      id_medicines: {
+      pharmacy_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'medicines',
+          model: 'pharmacies',
           key: 'id'
-        }
-      },
-      id_vendor: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at: {
         type: Sequelize.DATE,
@@ -45,6 +44,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('sales')
+    return await queryInterface.dropTable('vendors')
   }
 }

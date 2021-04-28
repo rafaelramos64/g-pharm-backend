@@ -3,8 +3,9 @@ class PharmaciesServices {
     this.Pharmacy = Pharmacy
   }
 
-  async create (name, description, id_admin = null) {
-    const dataPharmacy = { name, description, id_admin }
+  async create (name, description, password) {
+    const dataPharmacy = { name, description, password }
+
     try {
       return await this.Pharmacy.create(dataPharmacy)
     } catch (error) {

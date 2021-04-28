@@ -6,8 +6,7 @@ const pharmaciesServices = new PharmaciesServices(Pharmacies)
 
 module.exports = {
   async save (request, response) {
-    const { name, description } = request.body
-    const idAdmin = !request.body.id_admin ? null : request.body.id_admin
+    const { name, description, password } = request.body
 
     const schema = yup.object().shape({
       name: yup.string().required(),
@@ -22,14 +21,14 @@ module.exports = {
       return response.status(400).json({ message: error })
     }
 
-    const dataPharmacy = { name, description, id_admin: idAdmin }
+    const dataPharmacy = { name, description, password }
 
     try {
-      await pharmaciesServices.create(dataPharmacy.name, dataPharmacy.description, dataPharmacy.id_admin)
+      await pharmaciesServices.create(dataPharmacy.name, dataPharmacy.description, dataPharmacy.password)
       return response.status(201).json({ name, description })
     } catch (error) {
       console.error('at PharmaciesController', error)
-      return response.status(500).json(error)
+      return response.status(400).json(error.message)
     }
   }
 }

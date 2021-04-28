@@ -19,17 +19,27 @@ class Medicines extends Model {
         type: DataTypes.DATE,
         allowNull: false
       },
-      id_admin: {
+      stock: {
         type: DataTypes.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
+        allowNull: false
       }
     }, {
       sequelize,
       modelName: 'Medicines',
       tableName: 'medicines'
+    })
+  }
+
+  static associate (models) {
+    this.belongsTo(models.Pharmacies, {
+      foreignKey: 'id_pharmacy',
+      as: 'medicine_pharmacy'
+    })
+
+    this.belongsToMany(models.Sales, {
+      foreignKey: 'vendor_id',
+      through: 'sales_medicines',
+      as: 'sales'
     })
   }
 }

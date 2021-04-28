@@ -1,16 +1,19 @@
 const { Users } = require('../models')
-const { UsersServices } = require('../services')
+const { VendorsServices } = require('../services')
 const yup = require('yup')
 
-const usersServices = new UsersServices(Users)
+const vendorsServices = new VendorsServices(Users)
 
 module.exports = {
   async save (request, response) {
-    const { name, email } = request.body
+    const { name, email, password } = request.body
 
     const schema = yup.object().shape({
       name: yup.string().required(),
-      email: yup.string().email().required()
+      email: yup.string().email().required(),
+      password: yup.string()
+        .required()
+        .min(8)
     })
 
     try {
@@ -21,11 +24,11 @@ module.exports = {
     }
 
     try {
-      await usersServices.create(name, email)
+      await vendorsServices.create(name, email, password)
       return response.status(201).json({ name, email })
     } catch (error) {
       console.error('at UserController', error)
-      return response.status(500).json(error)
+      return response.status(400).json(error)
     }
   },
 
@@ -33,7 +36,7 @@ module.exports = {
     const id = request.params.id
 
     if (id) {
-      const user = await usersServices.delete(id)
+      const user = await vendorsServices.delete(id)
 
       if (user.error) return response.status(400).json(user)
 

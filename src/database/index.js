@@ -2,16 +2,20 @@ const Sequelize = require('sequelize')
 const dbConfig = require('../config/database')
 
 // Models
-const { Users, Pharmacies, Sales, Medicines } = require('../models')
+const { Vendors, Pharmacies, Sales, Medicines } = require('../models')
 
 const connection = new Sequelize(dbConfig)
 
 // Connections Models
-Users.init(connection)
+Vendors.init(connection)
 Pharmacies.init(connection)
 Sales.init(connection)
 Medicines.init(connection)
 
+// Associations Models
+Medicines.associate(connection.models)
 Sales.associate(connection.models)
+Pharmacies.associate(connection.models)
+Vendors.associate(connection.models)
 
 module.exports = connection
