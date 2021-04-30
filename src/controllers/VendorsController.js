@@ -1,8 +1,8 @@
-const { Vendors } = require('../models')
+const { Vendors, Pharmacies } = require('../models')
 const { VendorsServices } = require('../services')
 const yup = require('yup')
 
-const vendorsServices = new VendorsServices(Vendors)
+const vendorsServices = new VendorsServices(Vendors, Pharmacies)
 
 module.exports = {
   async save (request, response) {
@@ -22,7 +22,7 @@ module.exports = {
       await schema.validate(request.body, { abortEarly: false })
     } catch (error) {
       console.error(error)
-      return response.status(400).json({ message: error })
+      return response.status(400).json({ message: error.errors })
     }
 
     try {
@@ -30,7 +30,7 @@ module.exports = {
       return response.status(201).json({ name, email })
     } catch (error) {
       console.error('at VendorController', error)
-      return response.status(400).json(error)
+      return response.status(400).json(error.message)
     }
   },
 
