@@ -7,11 +7,11 @@ const database = require('../../database')
 const API_PHARMACY = '/api/pharmacies'
 const API_VENDOR = '/api/vendors'
 const DEFAULT_PHARMACY = { name: 'Super Pharm', description: 'Farmácia do rémedio mais caro do mundo.', password: '12343454' }
-const DEFAULT_VENDOR = { name: 'fulano', email: 'fulano@nada.com', password: 'Edm@rques008' }
+const DEFAULT_VENDOR = { name: 'fulano', email: 'fulano@nada.com', password: 'Edm@rques008', pharmacy_id: 1 }
 beforeAll(async () => {
   await database.sync({ force: true })
-  await request(app).post(API_VENDOR).send(DEFAULT_VENDOR)
   await request(app).post(API_PHARMACY).send(DEFAULT_PHARMACY)
+  await request(app).post(API_VENDOR).send(DEFAULT_VENDOR)
 })
 
 afterAll(async () => {
