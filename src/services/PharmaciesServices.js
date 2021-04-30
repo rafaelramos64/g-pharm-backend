@@ -17,7 +17,7 @@ class PharmaciesServices {
   async getAll () {
     try {
       return await this.Pharmacy.findAll({
-        attributes: ['id', 'name', 'description', 'id_admin']
+        attributes: ['id', 'name', 'description']
       })
     } catch (error) {
       console.error('at PharmaciesServices', error)

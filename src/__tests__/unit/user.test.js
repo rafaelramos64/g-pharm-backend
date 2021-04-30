@@ -1,38 +1,40 @@
 /* global jest beforeAll test expect */
-const { UsersServices } = require('../../../src/services')
+const { VendorsServices } = require('../../../src/services')
 jest.mock('../../../src/models')
-const { Users } = require('../../../src/models')
+const { Vendors } = require('../../../src/models')
 
-let usersServices
+let vendorsServices
 beforeAll(() => {
-  usersServices = new UsersServices(Users)
+  vendorsServices = new VendorsServices(Vendors)
 })
 
 test('It should fetch all Users', async () => {
-  const users = [{ id: 1, name: 'Fulano 1', email: 'fulano1@email.com' }, { id: 2, name: 'Fulano 2', email: 'fulano2@email.com' }]
-  Users.findAll.mockResolvedValue(users)
-  const response = await usersServices.getAll()
-  expect(response).toEqual(users)
+  const vendors = [{ id: 1, name: 'Fulano 1', email: 'fulano1@email.com' }, { id: 2, name: 'Fulano 2', email: 'fulano2@email.com' }]
+  Vendors.findAll.mockResolvedValue(vendors)
+  const response = await vendorsServices.getAll()
+  expect(response).toEqual(vendors)
 })
 
 test('It should insert an user', async () => {
-  const user3 = {
+  const vendor3 = {
     id: 3,
     name: 'fulano3',
-    email: 'fulano3@email.com'
+    email: 'fulano3@email.com',
+    password: 'fdlajlsdfjs9'
   }
-  Users.create.mockResolvedValue(user3)
-  const response = await usersServices.create(user3)
-  expect(response).toEqual(user3)
+  Vendors.create.mockResolvedValue(vendor3)
+  const response = await vendorsServices.create(vendor3)
+  expect(response).toEqual(vendor3)
 })
 
 test('It should delete an user', async () => {
-  const user4 = {
+  const vendor4 = {
     id: 4,
     name: 'fulano4',
-    email: 'fulano4@email.com'
+    email: 'fulano4@email.com',
+    password: 'eiwierwocd'
   }
-  Users.destroy.mockResolvedValue(user4)
-  const response = await usersServices.delete(user4.id)
-  expect(response).toEqual(user4)
+  Vendors.destroy.mockResolvedValue(vendor4)
+  const response = await vendorsServices.delete(vendor4.id)
+  expect(response).toEqual(vendor4)
 })

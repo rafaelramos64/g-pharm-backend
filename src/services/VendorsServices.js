@@ -3,8 +3,8 @@ class VendorsServices {
     this.Vendor = Vendor
   }
 
-  async create (name, email, password) {
-    const dataVendor = { name, email, password }
+  async create (name, email, password, pharmacyId) {
+    const dataVendor = { name, email, password, pharmacy_id: pharmacyId }
     try {
       return await this.Vendor.create(dataVendor)
     } catch (error) {
@@ -16,7 +16,7 @@ class VendorsServices {
   async getAll () {
     try {
       return await this.Vendor.findAll({
-        attributes: ['id', 'name', 'email']
+        attributes: ['id', 'name', 'email', 'pharmacy_id']
       })
     } catch (error) {
       console.error('at VendorsServices', error)

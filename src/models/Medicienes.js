@@ -32,7 +32,7 @@ class Medicines extends Model {
 
   static associate (models) {
     this.belongsTo(models.Pharmacies, {
-      foreignKey: 'id_pharmacy',
+      foreignKey: 'pharmacy_id',
       as: 'medicine_pharmacy'
     })
 

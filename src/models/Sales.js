@@ -27,7 +27,7 @@ class Sales extends Model {
   }
 
   static associate (models) {
-    this.hasOne(models.Vendors, {
+    this.belongsTo(models.Vendors, {
       foreignKey: 'vendor_id',
       as: 'sale_vendor'
     })
