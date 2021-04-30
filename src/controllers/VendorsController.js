@@ -6,7 +6,8 @@ const vendorsServices = new VendorsServices(Vendors, Pharmacies)
 
 module.exports = {
   async save (request, response) {
-    const { name, email, password, pharmacy_id } = request.body
+    const { name, email, password } = request.body
+    const { pharmacy_id } = request.params
 
     const schema = yup.object().shape({
       name: yup.string().required(),
@@ -21,7 +22,7 @@ module.exports = {
     try {
       await schema.validate(request.body, { abortEarly: false })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return response.status(400).json({ message: error.errors })
     }
 
@@ -29,7 +30,7 @@ module.exports = {
       await vendorsServices.create(name, email, password, pharmacy_id)
       return response.status(201).json({ name, email })
     } catch (error) {
-      console.error('at VendorController', error)
+      // console.error('at VendorController', error)
       return response.status(400).json(error.message)
     }
   },

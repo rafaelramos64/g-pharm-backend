@@ -1,6 +1,6 @@
 class SalesServices {
-  constructor (Sale) {
-    this.Sale = Sale
+  constructor (Sales) {
+    this.sales = Sales
   }
 
   async create (salePrice, saleDate, idMedicines, idVendor) {
@@ -11,20 +11,21 @@ class SalesServices {
       id_vendor: idVendor
     }
     try {
-      return await this.Sale.create(dataSale)
+      return await this.sales.create(dataSale)
     } catch (error) {
-      console.error('at SalesServices', error)
+      // console.error('at SalesServices', error)
       throw new Error(error)
     }
   }
 
   async getAll () {
     try {
-      return await this.Sale.findAll({
+      return await this.sales.findAll({
         attributes: ['sale_price', 'sale_date', 'id_medicines', 'id_vendor']
       })
     } catch (error) {
-      console.error('at SalesServices', error)
+      // console.error('at SalesServices', error)
+      throw new Error(error)
     }
   }
 }

@@ -1,14 +1,18 @@
+const bcrypt = require('bcrypt')
+
+const SALT = 8
+
 class VendorsServices {
-  constructor (Vendor, Pharmacy) {
-    this.Vendor = Vendor
-    this.Pharmacy = Pharmacy
+  constructor (Vendors, Pharmacies) {
+    this.vendors = Vendors
+    this.pharmacies = Pharmacies
   }
 
   async create (name, email, password, pharmacyId) {
-    const dataVendor = { name, email, password, pharmacy_id: pharmacyId }
+    const dataVendor = { name, email, password: bcrypt.hashSync(password, SALT), pharmacy_id: pharmacyId }
 
     try {
-      const pharmacy = await this.Pharmacy.findByPk(pharmacyId)
+      const pharmacy = await this.pharmacies.findByPk(pharmacyId)
 
       if (!pharmacy) {
         throw new Error('Pharmacy does not exists!')
@@ -18,7 +22,7 @@ class VendorsServices {
     }
 
     try {
-      return await this.Vendor.create(dataVendor)
+      return await this.vendors.create(dataVendor)
     } catch (error) {
       // console.error('at VendorsServices', error)
       throw new Error(error)
@@ -27,21 +31,23 @@ class VendorsServices {
 
   async getAll () {
     try {
-      return await this.Vendor.findAll({
+      return await this.vendors.findAll({
         attributes: ['id', 'name', 'email', 'pharmacy_id']
       })
     } catch (error) {
-      console.error('at VendorsServices', error)
+      // console.error('at VendorsServices', error)
+      throw new Error(error)
     }
   }
 
   async delete (id) {
     try {
-      return await this.Vendor.destroy({ where: { id } })
+      return await this.vendors.destroy({ where: { id } })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       throw new Error(error)
     }
   }
 }
+
 module.exports = { VendorsServices }
