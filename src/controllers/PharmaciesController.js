@@ -21,7 +21,6 @@ module.exports = {
     try {
       await schema.validate(request.body, { abortEarly: false })
     } catch (error) {
-      // console.error(error)
       return response.status(400).json({ message: error.errors })
     }
 
@@ -36,7 +35,6 @@ module.exports = {
       )
       return response.status(201).json({ name, description })
     } catch (error) {
-      // console.error('at PharmaciesController', error)
       return response.status(400).json(error.message)
     }
   }

@@ -22,7 +22,6 @@ module.exports = {
     try {
       await schema.validate(request.body, { abortEarly: false })
     } catch (error) {
-      // console.error(error)
       return response.status(400).json({ message: error.errors })
     }
 
@@ -30,7 +29,6 @@ module.exports = {
       await vendorsServices.create(name, email, password, pharmacy_id)
       return response.status(201).json({ name, email })
     } catch (error) {
-      // console.error('at VendorController', error)
       return response.status(400).json(error.message)
     }
   },

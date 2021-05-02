@@ -18,7 +18,6 @@ class PharmaciesServices {
 
       return await this.pharmacies.create(dataPharmacy)
     } catch (error) {
-      // console.error('at PharmaciesServices', error)
       throw new Error(error)
     }
   }
@@ -35,7 +34,6 @@ class PharmaciesServices {
 
       return medicines
     } catch (error) {
-      // console.error('at PharmaciesServices', error)
       throw new Error(error)
     }
   }
