@@ -24,27 +24,50 @@ class VendorsServices {
     try {
       return await this.vendors.create(dataVendor)
     } catch (error) {
-      // console.error('at VendorsServices', error)
       throw new Error(error)
     }
   }
 
   async getAll () {
     try {
-      return await this.vendors.findAll({
+      const vendor = await this.vendors.findAll({
         attributes: ['id', 'name', 'email', 'pharmacy_id']
       })
+
+      if (!vendor) {
+        throw new Error('There is no vendor!')
+      }
+
+      return vendor
     } catch (error) {
-      // console.error('at VendorsServices', error)
+      throw new Error(error)
+    }
+  }
+
+  async getById (id) {
+    try {
+      const vendor = await this.vendors.findByPk(id)
+
+      if (!vendor) {
+        throw new Error('Vendor does not exists!')
+      }
+
+      return vendor
+    } catch (error) {
       throw new Error(error)
     }
   }
 
   async delete (id) {
     try {
+      const vendor = await this.getById(id)
+
+      if (!vendor) {
+        throw new Error('Vendor does not Exists')
+      }
+
       return await this.vendors.destroy({ where: { id } })
     } catch (error) {
-      // console.error(error)
       throw new Error(error)
     }
   }

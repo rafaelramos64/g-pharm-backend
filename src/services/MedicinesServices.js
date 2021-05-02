@@ -3,16 +3,16 @@ class MedicinesSales {
     this.medicines = Medicines
   }
 
-  async create (name, price, purchase_date, due_date, stock) {
-    const dataMedicine = {
-      name,
-      price,
-      purchase_date,
-      due_date,
-      stock
-    }
-
+  async create (name, price, purchaseDate, dueDate, stock) {
     try {
+      const dataMedicine = {
+        name,
+        price,
+        purchase_date: purchaseDate,
+        due_date: dueDate,
+        stock
+      }
+
       const medicine = await this.medicines.create(dataMedicine)
       return medicine
     } catch (error) {
@@ -25,6 +25,10 @@ class MedicinesSales {
       const medicines = await this.medicines.findAll({
         attributes: ['id', 'name', 'price', 'purchase_date', 'due_date', 'stock']
       })
+
+      if (!medicines) {
+        throw new Error('There is no medicine!')
+      }
 
       return medicines
     } catch (error) {
@@ -39,7 +43,7 @@ class MedicinesSales {
       })
 
       if (!medicines) {
-        throw new Error('Medicines does not exists')
+        throw new Error('Medicines name does not exists')
       }
 
       return medicines
@@ -53,7 +57,7 @@ class MedicinesSales {
       const medicine = await this.medicines.findByPk(id)
 
       if (!medicine) {
-        throw new Error('Id not exists')
+        throw new Error('Medicine does not exists!')
       }
 
       return medicine
@@ -64,11 +68,14 @@ class MedicinesSales {
 
   async changeById (id, data = {}) {
     try {
-      const medicine = await this.medicines.update(data, {
+      const medicine = await this.getById(id)
+
+      if (!medicine) {
+        throw new Error('Medicine does not exists!')
+      }
+      return await this.medicines.update(data, {
         where: { id }
       })
-
-      return medicine
     } catch (error) {
       throw new Error(error)
     }
@@ -76,11 +83,15 @@ class MedicinesSales {
 
   async delete (id) {
     try {
-      const medicine = await this.medicines.destroy({
+      const medicine = await this.getById(id)
+
+      if (!medicine) {
+        throw new Error('Medicine does not Exists!')
+      }
+
+      return await this.medicines.destroy({
         where: { id }
       })
-
-      return medicine
     } catch (error) {
       throw new Error(error)
     }

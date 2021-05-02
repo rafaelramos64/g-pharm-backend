@@ -10,14 +10,6 @@ class Sales extends Model {
       sale_date: {
         type: DataTypes.DATE,
         allowNull: false
-      },
-      id_medicines: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'medicines',
-          key: 'id'
-        }
       }
     }, {
       sequelize,
