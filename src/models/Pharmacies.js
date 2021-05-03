@@ -31,6 +31,16 @@ class Pharmacies extends Model {
       foreignKey: 'pharmacy_id',
       as: 'parmacie_vendors'
     })
+
+    this.belongsTo(models.Sales, {
+      foreignKey: 'pharmacy_id',
+      as: 'pharmacy_sale'
+    })
+
+    this.hasMany(models.Medicines, {
+      foreignKey: 'pharmacy_id',
+      as: 'pharmacy_medicines'
+    })
   }
 }
 

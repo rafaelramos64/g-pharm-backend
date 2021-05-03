@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      pharmacy_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       vendor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

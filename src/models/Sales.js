@@ -24,6 +24,11 @@ class Sales extends Model {
       as: 'sale_vendor'
     })
 
+    this.hasOne(models.Pharmacies, {
+      foreignKey: 'pharmacy_id',
+      as: 'sale_pharmacy'
+    })
+
     this.belongsToMany(models.Medicines, {
       foreignKey: 'medicines_id',
       through: 'sales_medicines',

@@ -3,13 +3,14 @@ class SalesServices {
     this.sales = Sales
   }
 
-  async create (salePrice, saleDate, medicinesId, vendorId) {
+  async create (salePrice, saleDate, medicinesId, vendorId, pharmacyId) {
     try {
       const dataSale = {
         sale_price: salePrice,
         sale_date: saleDate,
         medicines_id: medicinesId,
-        vendor_id: vendorId
+        vendor_id: vendorId,
+        pharmacy_id: pharmacyId
       }
       return await this.sales.create(dataSale)
     } catch (error) {
@@ -17,10 +18,10 @@ class SalesServices {
     }
   }
 
-  async getAll () {
+  async getAll (pharmacyId) {
     try {
       const sales = await this.sales.findAll({
-        attributes: ['sale_price', 'sale_date', 'id_medicines', 'id_vendor']
+        where: { pharmacy_id: pharmacyId }
       })
 
       if (!sales) {

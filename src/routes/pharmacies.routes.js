@@ -1,8 +1,8 @@
 const { Router } = require('express')
-const PharmaciesController = require('../controllers/PharmaciesController')
+const pharmaciesController = require('../controllers/PharmaciesController')
 
 const router = Router()
 
-router.post('/pharmacies', PharmaciesController.save)
+router.post('/pharmacies', pharmaciesController.save)
 
 module.exports = router

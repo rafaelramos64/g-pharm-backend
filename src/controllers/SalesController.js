@@ -6,16 +6,21 @@ const salesServices = new SalesServices(Sales)
 module.exports = {
   async create (request, response) {
     const { salePrice, saleDate, medicinesId, vendorId } = request.body
+    const { pharmacyId } = request.params
 
-    const schema = yup.object().shape({
+    const schemaBody = yup.object().shape({
       salePrice: yup.number().required(),
       saleDate: yup.date().required(),
       medicinesId: yup.array(yup.number()).required(),
       vendorId: yup.number().required()
     })
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required()
+    })
 
     try {
-      await schema.validate(request.body, { abortEarly: false })
+      await schemaBody.validate(request.body, { abortEarly: false })
+      await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.errors)
     }
@@ -25,7 +30,8 @@ module.exports = {
         salePrice,
         saleDate,
         medicinesId,
-        vendorId
+        vendorId,
+        pharmacyId
       )
 
       return response.status(201).json(sale)
@@ -35,8 +41,20 @@ module.exports = {
   },
 
   async getAll (request, response) {
+    const { pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required()
+    })
+
     try {
-      const sales = await salesServices.getAll()
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const sales = await salesServices.getAll(pharmacyId)
 
       return response.status(200).json(sales)
     } catch (error) {
