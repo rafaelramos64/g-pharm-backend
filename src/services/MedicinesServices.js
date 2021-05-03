@@ -1,4 +1,4 @@
-class MedicinesSales {
+class MedicinesServices {
   constructor (Medicines) {
     this.medicines = Medicines
   }
@@ -81,7 +81,7 @@ class MedicinesSales {
     }
   }
 
-  async delete (id) {
+  async deleteById (id) {
     try {
       const medicine = await this.getById(id)
 
@@ -98,4 +98,4 @@ class MedicinesSales {
   }
 }
 
-module.exports = { MedicinesSales }
+module.exports = { MedicinesServices }

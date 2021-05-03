@@ -22,17 +22,31 @@ class PharmaciesServices {
     }
   }
 
-  async getAll () {
+  async getByPk (id) {
     try {
-      const medicines = await this.pharmacies.findAll({
-        attributes: ['id', 'name', 'description']
-      })
+      const pharmacie = await this.pharmacies.findByPk(id)
 
-      if (!medicines) {
-        throw new Error('Medicine does not Exists!')
+      if (!pharmacie) {
+        throw new Error('Pharmacy does not Exists!')
       }
 
-      return medicines
+      return pharmacie
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async deleteById (id) {
+    try {
+      const pharmacie = await this.getByPk(id)
+
+      if (!pharmacie) {
+        throw new Error('Pharmacie does not exists!')
+      }
+
+      return await this.pharmacies.destroy({
+        where: { id }
+      })
     } catch (error) {
       throw new Error(error)
     }

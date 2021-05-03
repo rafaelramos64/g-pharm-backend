@@ -18,7 +18,7 @@ class VendorsServices {
         throw new Error('Pharmacy does not exists!')
       }
     } catch (error) {
-      throw new Error(error.message)
+      throw new Error(error)
     }
 
     try {
@@ -58,7 +58,7 @@ class VendorsServices {
     }
   }
 
-  async delete (id) {
+  async deleteById (id) {
     try {
       const vendor = await this.getById(id)
 

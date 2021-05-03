@@ -33,7 +33,20 @@ module.exports = {
         dataPharmacy.email,
         dataPharmacy.password
       )
+
       return response.status(201).json({ name, description })
+    } catch (error) {
+      return response.status(400).json(error.message)
+    }
+  },
+
+  async deleteById (request, response) {
+    const { id } = request.params
+
+    try {
+      const pharmacie = pharmaciesServices.deleteById(id)
+
+      return response.status(200).json(pharmacie)
     } catch (error) {
       return response.status(400).json(error.message)
     }
