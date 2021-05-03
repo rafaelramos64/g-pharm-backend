@@ -3,14 +3,15 @@ class MedicinesServices {
     this.medicines = Medicines
   }
 
-  async create (name, price, purchaseDate, dueDate, stock) {
+  async create (name, price, purchaseDate, dueDate, stock, pharmacyId) {
     try {
       const dataMedicine = {
         name,
         price,
         purchase_date: purchaseDate,
         due_date: dueDate,
-        stock
+        stock,
+        pharmacy_id: pharmacyId
       }
 
       const medicine = await this.medicines.create(dataMedicine)
@@ -20,10 +21,10 @@ class MedicinesServices {
     }
   }
 
-  async getAll () {
+  async getAll (pharmacyId) {
     try {
       const medicines = await this.medicines.findAll({
-        attributes: ['id', 'name', 'price', 'purchase_date', 'due_date', 'stock']
+        where: { pharmacy_id: pharmacyId }
       })
 
       if (!medicines) {
@@ -36,10 +37,10 @@ class MedicinesServices {
     }
   }
 
-  async getByName (name) {
+  async getByName (name, pharmacyId) {
     try {
       const medicines = await this.medicines.findAll({
-        where: { name }
+        where: { name, pharmacy_id: pharmacyId }
       })
 
       if (!medicines) {
@@ -52,9 +53,11 @@ class MedicinesServices {
     }
   }
 
-  async getById (id) {
+  async getById (medicineId, pharmacyId) {
     try {
-      const medicine = await this.medicines.findByPk(id)
+      const medicine = await this.medicines.findAll({
+        where: { id: medicineId, pharmacy_id: pharmacyId }
+      })
 
       if (!medicine) {
         throw new Error('Medicine does not exists!')
@@ -66,31 +69,31 @@ class MedicinesServices {
     }
   }
 
-  async changeById (id, data = {}) {
+  async changeById (medicineId, pharmacyId, data = {}) {
     try {
-      const medicine = await this.getById(id)
+      const medicine = await this.getById(medicineId, pharmacyId)
 
       if (!medicine) {
         throw new Error('Medicine does not exists!')
       }
       return await this.medicines.update(data, {
-        where: { id }
+        where: { id: medicineId, pharmacy_id: pharmacyId }
       })
     } catch (error) {
       throw new Error(error)
     }
   }
 
-  async deleteById (id) {
+  async deleteById (medicineId, pharmacyId) {
     try {
-      const medicine = await this.getById(id)
+      const medicine = await this.getById(medicineId, pharmacyId)
 
       if (!medicine) {
         throw new Error('Medicine does not Exists!')
       }
 
       return await this.medicines.destroy({
-        where: { id }
+        where: { id: medicineId, pharmacy_id: pharmacyId }
       })
     } catch (error) {
       throw new Error(error)

@@ -28,10 +28,10 @@ class VendorsServices {
     }
   }
 
-  async getAll () {
+  async getAll (pharmacyId) {
     try {
       const vendor = await this.vendors.findAll({
-        attributes: ['id', 'name', 'email', 'pharmacy_id']
+        where: { pharmacy_id: pharmacyId }
       })
 
       if (!vendor) {

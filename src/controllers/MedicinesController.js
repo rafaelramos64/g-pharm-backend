@@ -8,21 +8,28 @@ module.exports = {
     const {
       name,
       price,
-      purchase_date,
-      due_date,
+      purchaseDate,
+      dueDate,
       stock
     } = request.body
 
-    const schema = yup.object().shape({
+    const { pharmacyId } = request.params
+
+    const schemaBody = yup.object().shape({
       name: yup.string().required(),
       price: yup.number().required(),
-      purchase_date: yup.date().required(),
-      due_date: yup.date().required(),
+      purchaseDate: yup.date().required(),
+      dueDate: yup.date().required(),
       stock: yup.number().required()
     })
 
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required
+    })
+
     try {
-      schema.validate(request.body, { abortEarly: false })
+      await schemaBody.validate(request.body, { abortEarly: false })
+      await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.errors)
     }
@@ -31,9 +38,10 @@ module.exports = {
       const medicine = await medicinesServices.create(
         name,
         price,
-        purchase_date,
-        due_date,
-        stock
+        purchaseDate,
+        dueDate,
+        stock,
+        pharmacyId
       )
 
       return response.status(200).json(medicine)
@@ -43,8 +51,20 @@ module.exports = {
   },
 
   async getAll (request, response) {
+    const { pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required()
+    })
+
     try {
-      const medicines = await medicinesServices.getAll()
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const medicines = await medicinesServices.getAll(pharmacyId)
 
       return response.status(200).json(medicines)
     } catch (error) {
@@ -53,10 +73,25 @@ module.exports = {
   },
 
   async getByName (request, response) {
-    const { name } = request.params
+    const { pharmacyId } = request.params
+    const { name } = request.body
+
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required()
+    })
+    const schemaBody = yup.object.shape({
+      name: yup.string().required()
+    })
 
     try {
-      const medicines = await medicinesServices.getByName(name)
+      await schemaParams.validate(request.params, { abortEarly: false })
+      await schemaBody.validate(request.body, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const medicines = await medicinesServices.getByName(name, pharmacyId)
 
       return response.status(200).json(medicines)
     } catch (error) {
@@ -65,10 +100,21 @@ module.exports = {
   },
 
   async getById (request, response) {
-    const { id } = request.params
+    const { medicineId, pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required(),
+      medicineId: yup.number().required()
+    })
 
     try {
-      const medicine = await medicinesServices.getById(id)
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const medicine = await medicinesServices.getById(medicineId, pharmacyId)
 
       return response.status(200).json(medicine)
     } catch (error) {
@@ -77,10 +123,10 @@ module.exports = {
   },
 
   async changeById (request, response) {
-    const { id } = request.params
+    const { medicineId, pharmacyId } = request.params
 
     try {
-      const medicine = await medicinesServices.changeById(id)
+      const medicine = await medicinesServices.changeById(medicineId, pharmacyId)
 
       return response.status(201).json(medicine)
     } catch (error) {
@@ -89,10 +135,21 @@ module.exports = {
   },
 
   async deleteById (request, response) {
-    const { id } = request.params
+    const { medicineId, pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      medicineId: yup.number().required(),
+      pharmacyId: yup.number().required()
+    })
 
     try {
-      const medicine = await medicinesServices.deleteById(id)
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const medicine = await medicinesServices.deleteById(medicineId, pharmacyId)
 
       return response.status(200).json(medicine)
     } catch (error) {

@@ -24,14 +24,12 @@ module.exports = {
       return response.status(400).json({ message: error.errors })
     }
 
-    const dataPharmacy = { name, description, email, password }
-
     try {
       await pharmaciesServices.create(
-        dataPharmacy.name,
-        dataPharmacy.description,
-        dataPharmacy.email,
-        dataPharmacy.password
+        name,
+        description,
+        email,
+        password
       )
 
       return response.status(201).json({ name, description })

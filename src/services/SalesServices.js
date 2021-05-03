@@ -3,13 +3,13 @@ class SalesServices {
     this.sales = Sales
   }
 
-  async create (salePrice, saleDate, idMedicines, idVendor) {
+  async create (salePrice, saleDate, medicinesId, vendorId) {
     try {
       const dataSale = {
         sale_price: salePrice,
         sale_date: saleDate,
-        medicines_id: idMedicines,
-        vendor_id: idVendor
+        medicines_id: medicinesId,
+        vendor_id: vendorId
       }
       return await this.sales.create(dataSale)
     } catch (error) {
