@@ -34,6 +34,7 @@ module.exports = {
 
       return response.status(201).json({ name, description })
     } catch (error) {
+      console.error(error)
       return response.status(400).json(error.message)
     }
   },

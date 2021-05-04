@@ -19,7 +19,11 @@ module.exports = {
       },
       pharmacy_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'pharmacies',
+          key: 'id'
+        }
       },
       vendor_id: {
         type: Sequelize.INTEGER,
