@@ -32,7 +32,7 @@ class Pharmacies extends Model {
       as: 'parmacie_vendors'
     })
 
-    this.belongsTo(models.Sales, {
+    this.hasMany(models.Sales, {
       foreignKey: 'pharmacy_id',
       as: 'pharmacy_sale'
     })
