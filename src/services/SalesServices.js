@@ -34,24 +34,10 @@ class SalesServices {
     }
   }
 
-  async getById (id) {
+  async getById (saleId, pharmacyId) {
     try {
-      const sale = await this.sales.findByPk(id)
-
-      if (!sale) {
-        throw new Error('Sale does not exists!')
-      }
-
-      return sale
-    } catch (error) {
-      throw new Error(error)
-    }
-  }
-
-  async getByDate (saleDate) {
-    try {
-      const sale = await this.sale.findAll({
-        where: { sale_date: saleDate }
+      const sale = await this.sales.findAll({
+        where: { id: saleId, pharmacy_id: pharmacyId }
       })
 
       if (!sale) {
@@ -64,15 +50,31 @@ class SalesServices {
     }
   }
 
-  async deleteById (id) {
+  async getByDate (saleDate, pharmacyId) {
     try {
-      const sale = await this.getById(id)
+      const sale = await this.sale.findAll({
+        where: { sale_date: saleDate, pharmacy_id: pharmacyId }
+      })
 
       if (!sale) {
         throw new Error('Sale does not exists!')
       }
 
-      return await this.sale.destroy(id)
+      return sale
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async deleteById (saleId, pharmacyId) {
+    try {
+      const sale = await this.getById(saleId, pharmacyId)
+
+      if (!sale) {
+        throw new Error('Sale does not exists!')
+      }
+
+      return await this.sale.destroy(saleId)
     } catch (error) {
       throw new Error(error)
     }

@@ -5,9 +5,9 @@ const routes = Router()
 
 routes.post('/medicines/:pharmacyId', medicinesController.create)
 routes.get('/medicines/:pharmacyId', medicinesController.getAll)
-routes.get('/medicines/pername/:pharmacyId', medicinesController.getByName)
-routes.get('/medicines/perid/:medicineId/:pharmacyId', medicinesController.getById)
-routes.put('/medicines/:medicineId/:pharmacyId', medicinesController.changeById)
-routes.delete('medicines/delete/:medicineId/:pharmacyId', medicinesController.deleteById)
+routes.get('/medicines/:pharmacyId/pername', medicinesController.getByName)
+routes.get('/medicines/:pharmacyId/:medicineId/perid', medicinesController.getById)
+routes.put('/medicines/:pharmacyId/:medicineId', medicinesController.changeById)
+routes.delete('medicines/:pharmacyId/:medicineId', medicinesController.deleteById)
 
 module.exports = routes

@@ -9,7 +9,7 @@ module.exports = {
     const { name, email, password } = request.body
     const { pharmacyId } = request.params
 
-    const schema = yup.object().shape({
+    const schemaBody = yup.object().shape({
       name: yup.string().required(),
       email: yup.string().email().required(),
       password: yup.string()
@@ -18,13 +18,13 @@ module.exports = {
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/)
     })
 
-    const schema2 = yup.object().shape({
+    const schemaParams = yup.object().shape({
       pharmacyId: yup.number().required()
     })
 
     try {
-      await schema.validate(request.body, { abortEarly: false })
-      await schema2.validate(request.params, { abortEarly: false })
+      await schemaBody.validate(request.body, { abortEarly: false })
+      await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
       return response.status(400).json({ message: error.errors })
     }
@@ -40,6 +40,16 @@ module.exports = {
   async getAll (request, response) {
     const { pharmacyId } = request.params
 
+    const schemaParams = yup.object().shape({
+      pharmacyId: yup.number().required()
+    })
+
+    try {
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
     try {
       const vendors = await vendorsServices.getAll(pharmacyId)
 
@@ -50,10 +60,21 @@ module.exports = {
   },
 
   async getById (request, response) {
-    const { vendorId } = request.params
+    const { vendorId, pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      vendorId: yup.number().required(),
+      pharmacyId: yup.number().required()
+    })
 
     try {
-      const vendor = await vendorsServices.getById(vendorId)
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const vendor = await vendorsServices.getById(vendorId, pharmacyId)
 
       return response.status(200).json(vendor)
     } catch (error) {
@@ -62,10 +83,21 @@ module.exports = {
   },
 
   async deleteById (request, response) {
-    const { id } = request.params
+    const { vendorId, pharmacyId } = request.params
+
+    const schemaParams = yup.object().shape({
+      vendorId: yup.number().required(),
+      pharmacyId: yup.number().required()
+    })
 
     try {
-      const vendor = await vendorsServices.deleteById(id)
+      await schemaParams.validate(request.params, { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.errors)
+    }
+
+    try {
+      const vendor = await vendorsServices.deleteById(vendorId, pharmacyId)
 
       return response.status(200).json(vendor)
     } catch (error) {

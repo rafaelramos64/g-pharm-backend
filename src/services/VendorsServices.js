@@ -44,9 +44,11 @@ class VendorsServices {
     }
   }
 
-  async getById (id) {
+  async getById (vendorId, pharmacyId) {
     try {
-      const vendor = await this.vendors.findByPk(id)
+      const vendor = await this.vendors.findAll({
+        where: { id: vendorId, pharmacy_id: pharmacyId }
+      })
 
       if (!vendor) {
         throw new Error('Vendor does not exists!')
@@ -58,15 +60,15 @@ class VendorsServices {
     }
   }
 
-  async deleteById (id) {
+  async deleteById (vendorId, pharmacyId) {
     try {
-      const vendor = await this.getById(id)
+      const vendor = await this.getById(vendorId, pharmacyId)
 
       if (!vendor) {
         throw new Error('Vendor does not Exists')
       }
 
-      return await this.vendors.destroy({ where: { id } })
+      return await this.vendors.destroy({ where: { id: vendorId } })
     } catch (error) {
       throw new Error(error)
     }
