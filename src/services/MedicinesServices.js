@@ -8,13 +8,14 @@ class MedicinesServices {
       const dataMedicine = {
         name,
         price,
-        purchase_date: purchaseDate,
-        due_date: dueDate,
+        purchase_date: new Date(purchaseDate),
+        due_date: new Date(dueDate),
         stock,
         pharmacy_id: pharmacyId
       }
 
       const medicine = await this.medicines.create(dataMedicine)
+
       return medicine
     } catch (error) {
       throw new Error(error)

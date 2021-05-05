@@ -22,6 +22,14 @@ class VendorsServices {
     }
 
     try {
+      const vendorAlreadyExists = await this.vendors.findAll({
+        where: { email }
+      })
+
+      if (vendorAlreadyExists.length > 0) {
+        throw new Error('Vendor already registered!')
+      }
+
       return await this.vendors.create(dataVendor)
     } catch (error) {
       throw new Error(error)

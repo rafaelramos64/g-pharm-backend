@@ -9,6 +9,14 @@ class PharmaciesServices {
 
   async create (name, description, email, password) {
     try {
+      const pharmacyAlreadyExists = await this.pharmacies.findAll({
+        where: { email }
+      })
+
+      if (pharmacyAlreadyExists.length > 0) {
+        throw new Error('Pharmacy already registered!')
+      }
+
       const dataPharmacy = {
         name,
         description,

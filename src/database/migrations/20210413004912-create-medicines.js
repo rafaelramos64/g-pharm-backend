@@ -35,7 +35,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      stoke: {
+      stock: {
         type: Sequelize.INTEGER,
         allowNull: false
       },

@@ -24,14 +24,14 @@ module.exports = {
     })
 
     const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required
+      pharmacyId: yup.number().required()
     })
 
     try {
       await schemaBody.validate(request.body, { abortEarly: false })
       await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
-      return response.status(400).json(error.errors)
+      return response.status(400).json(error)
     }
 
     try {
