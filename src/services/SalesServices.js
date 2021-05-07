@@ -1,6 +1,7 @@
 class SalesServices {
-  constructor (Sales) {
+  constructor (Sales, Medicines) {
     this.sales = Sales
+    this.medicines = Medicines
   }
 
   async create (salePrice, saleDate, medicines = [], vendorId, pharmacyId) {
@@ -11,20 +12,16 @@ class SalesServices {
         vendor_id: vendorId,
         pharmacy_id: pharmacyId
       }
-      const sale = await this.sales.create(dataSale)
+      const medicine = await this.medicines.findByPk(1)
 
-      console.log(medicines[0])
+      const [sale] = await this.sales.findOrCreate({
+        where: dataSale
+      })
+
+      console.log(medicine)
 
       for (const index in medicines) {
-        await sale.addMedicine(sale.id,
-          {
-            through: {
-              medicine_id: medicines[index].id,
-              value_unit: medicines[index].price,
-              amount: medicines[index].amount
-            }
-          }
-        )
+        await sale.addMedicine(medicine)
       }
 
       return sale
