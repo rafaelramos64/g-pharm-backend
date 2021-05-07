@@ -30,8 +30,8 @@ class Sales extends Model {
     })
 
     this.belongsToMany(models.Medicines, {
-      foreignKey: 'medicines_id',
       through: 'sales_medicines',
+      foreignKey: 'medicine_id',
       as: 'medicines'
     })
   }

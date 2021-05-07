@@ -5,17 +5,22 @@ const { SalesServices } = require('../services')
 const salesServices = new SalesServices(Sales)
 module.exports = {
   async create (request, response) {
-    const { salePrice, saleDate, medicinesId, vendorId } = request.body
-    const { pharmacyId } = request.params
+    const { salePrice, medicines, saleDate } = request.body
+    const { pharmacyId, vendorId } = request.params
 
     const schemaBody = yup.object().shape({
-      salePrice: yup.number().required(),
       saleDate: yup.date().required(),
-      medicinesId: yup.array(yup.number()).required(),
-      vendorId: yup.number().required()
+      salePrice: yup.number().required(),
+      medicines: yup.array(
+        yup.object({
+          id: yup.number(),
+          amount: yup.number(),
+          price: yup.number()
+        })).required()
     })
     const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required()
+      pharmacyId: yup.number().required(),
+      vendorId: yup.number().required()
     })
 
     try {
@@ -29,13 +34,14 @@ module.exports = {
       const sale = await salesServices.create(
         salePrice,
         saleDate,
-        medicinesId,
+        medicines,
         vendorId,
         pharmacyId
       )
 
       return response.status(201).json(sale)
     } catch (error) {
+      console.error('--------------------------------------------------------\n', error)
       return response.status(400).json(error.message)
     }
   },

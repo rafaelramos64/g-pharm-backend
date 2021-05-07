@@ -3,16 +3,31 @@ class SalesServices {
     this.sales = Sales
   }
 
-  async create (salePrice, saleDate, medicinesId, vendorId, pharmacyId) {
+  async create (salePrice, saleDate, medicines = [], vendorId, pharmacyId) {
     try {
       const dataSale = {
         sale_price: salePrice,
         sale_date: saleDate,
-        medicines_id: medicinesId,
         vendor_id: vendorId,
         pharmacy_id: pharmacyId
       }
-      return await this.sales.create(dataSale)
+      const sale = await this.sales.create(dataSale)
+
+      console.log(medicines[0])
+
+      for (const index in medicines) {
+        await sale.addMedicine(sale.id,
+          {
+            through: {
+              medicine_id: medicines[index].id,
+              value_unit: medicines[index].price,
+              amount: medicines[index].amount
+            }
+          }
+        )
+      }
+
+      return sale
     } catch (error) {
       throw new Error(error)
     }
