@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const dbConfig = require('../config/database')
 
 // Models
-const { Vendors, Pharmacies, Sales, Medicines } = require('../models')
+const { Vendors, Pharmacies, Sales, Medicines, SalesMedicines } = require('../models')
 
 const connection = new Sequelize(dbConfig)
 
@@ -11,6 +11,7 @@ Vendors.init(connection)
 Pharmacies.init(connection)
 Sales.init(connection)
 Medicines.init(connection)
+SalesMedicines.init(connection)
 
 // Associations Models
 Medicines.associate(connection.models)

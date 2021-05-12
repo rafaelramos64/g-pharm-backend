@@ -1,8 +1,8 @@
 const yup = require('yup')
-const { Sales, Medicines } = require('../models')
+const { Sales, Medicines, SalesMedicines } = require('../models')
 const { SalesServices } = require('../services')
 
-const salesServices = new SalesServices(Sales, Medicines)
+const salesServices = new SalesServices(Sales, Medicines, SalesMedicines)
 module.exports = {
   async create (request, response) {
     const { salePrice, medicines, saleDate } = request.body
