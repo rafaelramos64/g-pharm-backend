@@ -26,7 +26,7 @@ class Vendors extends Model {
   static associate (models) {
     this.belongsTo(models.Pharmacies, {
       foreignKey: 'pharmacy_id',
-      as: 'pharmacies_users'
+      as: 'vendor_pharmacy'
     })
   }
 }

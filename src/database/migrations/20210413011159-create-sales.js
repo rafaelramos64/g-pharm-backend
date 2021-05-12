@@ -27,6 +27,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      canceled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+      },
       vendor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

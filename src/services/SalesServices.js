@@ -1,33 +1,54 @@
 class SalesServices {
-  constructor (Sales, Medicines, SalesMedicines) {
+  constructor (Sales, Medicines, SalesMedicines, Vendors) {
     this.sales = Sales
     this.medicines = Medicines
     this.salesMedicines = SalesMedicines
+    this.vendors = Vendors
   }
 
   async create (salePrice, saleDate, medicines = [], vendorId, pharmacyId) {
     try {
       const dataSale = {
         sale_price: salePrice,
-        sale_date: saleDate,
+        sale_date: new Date(saleDate),
         vendor_id: vendorId,
         pharmacy_id: pharmacyId
       }
-      const medicine = await this.medicines.findByPk(medicines[0].id)
+
+      for (const index in medicines) {
+        const medicine = await this.medicines.findByPk(medicines[index].id)
+        if (!medicine) {
+          throw new Error(`Medicine with id: ${medicines[index].id}, does not exists!`)
+        }
+      }
 
       const [sale] = await this.sales.findOrCreate({
-        where: dataSale
+        where: dataSale,
+        include: [{
+          model: this.medicines,
+          as: 'medicines',
+          attributes: ['id', 'name', 'price', 'stock', 'purchase_date', 'due_date']
+        }, {
+          model: this.vendors,
+          as: 'sale_vendor',
+          attributes: ['id', 'name', 'email']
+        }]
       })
 
-      // console.log(medicine)
-      // let idSaleMedicine
-      // for (const index in medicines) {
-      //   idSaleMedicine = await sale.addMedicine(medicine,
-      //     { sales_medicines: { amount: 23 } }
-      //   )
-      // }
-      const dataSalesMedicines = { medicine_id: medicine.id, sale_id: sale.id, amount: 20, value_unit: 10 }
-      await this.salesMedicines.create(dataSalesMedicines, { where: { id: 141 } })
+      const dataSalesMedicines = []
+      for (const index in medicines) {
+        dataSalesMedicines.push({
+          medicine_id: medicines[index].id,
+          sale_id: sale.id,
+          amount: medicines[index].amount,
+          value_unit: medicines[index].valueUnit
+        })
+      }
+
+      for (const index in dataSalesMedicines) {
+        await this.salesMedicines.create(dataSalesMedicines[index])
+      }
+
       return sale
     } catch (error) {
       throw new Error(error)
@@ -37,7 +58,16 @@ class SalesServices {
   async getAll (pharmacyId) {
     try {
       const sales = await this.sales.findAll({
-        where: { pharmacy_id: pharmacyId }
+        where: { pharmacy_id: pharmacyId },
+        include: [{
+          model: this.medicines,
+          as: 'medicines',
+          attributes: ['id', 'name', 'price', 'stock', 'purchase_date', 'due_date']
+        }, {
+          model: this.vendors,
+          as: 'sale_vendor',
+          attributes: ['id', 'name', 'email']
+        }]
       })
 
       if (!sales) {
@@ -53,7 +83,16 @@ class SalesServices {
   async getById (saleId, pharmacyId) {
     try {
       const sale = await this.sales.findAll({
-        where: { id: saleId, pharmacy_id: pharmacyId }
+        where: { id: saleId, pharmacy_id: pharmacyId },
+        include: [{
+          model: this.medicines,
+          as: 'medicines',
+          attributes: ['id', 'name', 'price', 'stock', 'purchase_date', 'due_date']
+        }, {
+          model: this.vendors,
+          as: 'sale_vendor',
+          attributes: ['id', 'name', 'email']
+        }]
       })
 
       if (!sale) {
@@ -68,8 +107,17 @@ class SalesServices {
 
   async getByDate (saleDate, pharmacyId) {
     try {
-      const sale = await this.sale.findAll({
-        where: { sale_date: saleDate, pharmacy_id: pharmacyId }
+      const sale = await this.sales.findAll({
+        where: { sale_date: saleDate, pharmacy_id: pharmacyId },
+        include: [{
+          model: this.medicines,
+          as: 'medicines',
+          attributes: ['id', 'name', 'price', 'stock', 'purchase_date', 'due_date']
+        }, {
+          model: this.vendors,
+          as: 'sale_vendor',
+          attributes: ['id', 'name', 'email']
+        }]
       })
 
       if (!sale) {
@@ -82,7 +130,7 @@ class SalesServices {
     }
   }
 
-  async deleteById (saleId, pharmacyId) {
+  async cancelById (saleId, pharmacyId) {
     try {
       const sale = await this.getById(saleId, pharmacyId)
 
@@ -90,7 +138,8 @@ class SalesServices {
         throw new Error('Sale does not exists!')
       }
 
-      return await this.sale.destroy(saleId)
+      sale.canceled = true
+      return await this.sales.update(sale, { where: { id: saleId, canceled: false } })
     } catch (error) {
       throw new Error(error)
     }

@@ -10,6 +10,9 @@ class Sales extends Model {
       sale_date: {
         type: DataTypes.DATE,
         allowNull: false
+      },
+      canceled: {
+        type: DataTypes.BOOLEAN
       }
     }, {
       sequelize,

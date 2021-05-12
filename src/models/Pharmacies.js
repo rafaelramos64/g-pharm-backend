@@ -29,7 +29,7 @@ class Pharmacies extends Model {
   static associate (models) {
     this.hasMany(models.Vendors, {
       foreignKey: 'pharmacy_id',
-      as: 'parmacie_vendors'
+      as: 'parmacy_vendors'
     })
 
     this.hasMany(models.Sales, {

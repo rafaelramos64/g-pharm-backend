@@ -1,8 +1,8 @@
 const yup = require('yup')
-const { Sales, Medicines, SalesMedicines } = require('../models')
+const { Sales, Medicines, SalesMedicines, Vendors } = require('../models')
 const { SalesServices } = require('../services')
 
-const salesServices = new SalesServices(Sales, Medicines, SalesMedicines)
+const salesServices = new SalesServices(Sales, Medicines, SalesMedicines, Vendors)
 module.exports = {
   async create (request, response) {
     const { salePrice, medicines, saleDate } = request.body
@@ -15,7 +15,7 @@ module.exports = {
         yup.object({
           id: yup.number(),
           amount: yup.number(),
-          price: yup.number()
+          valueUnit: yup.number()
         })).required()
     })
     const schemaParams = yup.object().shape({
@@ -41,7 +41,6 @@ module.exports = {
 
       return response.status(201).json(sale)
     } catch (error) {
-      console.error('--------------------------------------------------------\n', error)
       return response.status(400).json(error.message)
     }
   },
@@ -73,7 +72,7 @@ module.exports = {
 
     const schemaParams = yup.object().shape({
       saleId: yup.number().required(),
-      pharmacyId: yup.number().required
+      pharmacyId: yup.number().required()
     })
 
     try {
@@ -94,7 +93,6 @@ module.exports = {
   async getByDate (request, response) {
     const { saleDate } = request.body
     const { pharmacyId } = request.params
-
     const schemaBody = yup.object().shape({
       saleDate: yup.date().required()
     })
@@ -118,7 +116,7 @@ module.exports = {
     }
   },
 
-  async deleteById (request, response) {
+  async cancelById (request, response) {
     const { saleId, pharmacyId } = request.params
 
     const schemaParams = yup.object().shape({
@@ -133,7 +131,7 @@ module.exports = {
     }
 
     try {
-      const sale = await salesServices.deleteById(saleId, pharmacyId)
+      const sale = await salesServices.cancelById(saleId, pharmacyId)
 
       return response.status(200).json(sale)
     } catch (error) {
