@@ -8,35 +8,36 @@ beforeAll(() => {
   pharmaciesServices = new PharmaciesServices(Pharmacies)
 })
 
-test('It should fetch all pharmacies', async () => {
+test('It should fetch an pharmacy', async () => {
   const pharmacies = [
     {
       id: 1,
       name: 'O Globo',
       description: 'Tudo girando',
+      email: 'globoo@test.com',
       password: '7439dfjalsM)'
     },
     {
       id: 2,
       name: 'Farmácia dos Pobres',
+      email: 'poorpharm@test.com',
       description: 'Aqui sua pobresa só aumenta',
       password: 'djalsjdlfi3$M'
     }
   ]
-  Pharmacies.findAll.mockResolvedValue(pharmacies)
-  const response = await pharmaciesServices.getAll()
+  Pharmacies.findByPk.mockResolvedValue(pharmacies)
+  const response = await pharmaciesServices.getByPk(1)
   expect(response).toEqual(pharmacies)
-  expect(Pharmacies.findAll).toHaveBeenCalledWith({
-    attributes: ['id', 'name', 'description']
-  })
+  expect(Pharmacies.findByPk).toHaveBeenCalledWith(1)
 })
 
 test('It should insert a pharmacy', async () => {
   const pharmacie3 = {
     id: 3,
     name: 'PagMenos',
+    email: 'menospag@test.com',
     description: 'Deixe o olho da sua cara aqui',
-    password: 'eisaldfs$4M'
+    password: 'eisa3ldfs$4M'
   }
   Pharmacies.create.mockResolvedValue(pharmacie3)
   const response = await pharmaciesServices.create(pharmacie3)

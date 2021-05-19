@@ -13,7 +13,7 @@ class PharmaciesServices {
         where: { email }
       })
 
-      if (pharmacyAlreadyExists.length > 0) {
+      if (pharmacyAlreadyExists && pharmacyAlreadyExists.length > 0) {
         throw new Error('Pharmacy already registered!')
       }
 
