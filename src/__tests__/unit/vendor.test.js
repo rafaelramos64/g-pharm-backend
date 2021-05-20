@@ -1,11 +1,19 @@
 /* global jest beforeAll test expect */
-const { VendorsServices } = require('../../../src/services')
+const { VendorsServices, PharmaciesServices } = require('../../../src/services')
 jest.mock('../../../src/models')
-const { Vendors } = require('../../../src/models')
+const { Vendors, Pharmacies } = require('../../../src/models')
 
 let vendorsServices
-beforeAll(() => {
-  vendorsServices = new VendorsServices(Vendors)
+let pharmaciesServices
+const dataPharm = {
+  name: 'Farmácia dos Pobres',
+  description: 'Aqui você acaba de falir!',
+  email: 'pharmpobre6@pharmpoor.com',
+  password: 'Ph@rmacy0'
+}
+beforeAll(async () => {
+  vendorsServices = new VendorsServices(Vendors, Pharmacies)
+  pharmaciesServices = new PharmaciesServices(Pharmacies)
 })
 
 test('It should fetch all vendors', async () => {
@@ -24,7 +32,9 @@ test('It should insert a vendor', async () => {
     pharmacy_id: 1
   }
   Vendors.create.mockResolvedValue(vendor3)
-  const response = await vendorsServices.create(vendor3)
+  Pharmacies.create.mockResolvedValue(dataPharm)
+  await pharmaciesServices.create(dataPharm.name, dataPharm.description, dataPharm.email, dataPharm.password)
+  const response = await vendorsServices.create(vendor3.name, vendor3.email, vendor3.password, vendor3.pharmacy_id)
   expect(response).toEqual(vendor3)
 })
 
@@ -36,6 +46,6 @@ test('It should delete a vendor', async () => {
     password: 'eiwierwocd'
   }
   Vendors.destroy.mockResolvedValue(vendor4)
-  const response = await vendorsServices.delete(vendor4.id)
+  const response = await vendorsServices.deleteById(vendor4.id, 1)
   expect(response).toEqual(vendor4)
 })
