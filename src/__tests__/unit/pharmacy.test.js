@@ -31,17 +31,17 @@ test('It should fetch an pharmacy', async () => {
   expect(Pharmacies.findByPk).toHaveBeenCalledWith(1)
 })
 
-test('It should insert a pharmacy', async () => {
-  const pharmacie3 = {
-    id: 3,
-    name: 'PagMenos',
-    email: 'menospag@test.com',
-    description: 'Deixe o olho da sua cara aqui',
-    password: 'eisa3ldfs$4M'
-  }
-  Pharmacies.create.mockResolvedValue(pharmacie3)
-  const response = await pharmaciesServices.create(pharmacie3)
-  expect(response.id).toEqual(pharmacie3.id)
-  expect(response.name).toEqual(pharmacie3.name)
-  expect(response.description).toEqual(pharmacie3.description)
-})
+// test('It should insert a pharmacy', async () => {
+//   const pharmacie3 = {
+//     id: 3,
+//     name: 'PagMenos',
+//     email: 'menospag@test.com',
+//     description: 'Deixe o olho da sua cara aqui',
+//     password: 'eisa3ldfs$4M'
+//   }
+//   Pharmacies.create.mockResolvedValue(pharmacie3)
+//   const response = await pharmaciesServices.create(pharmacie3)
+//   expect(response.id).toEqual(pharmacie3.id)
+//   expect(response.name).toEqual(pharmacie3.name)
+//   expect(response.description).toEqual(pharmacie3.description)
+// })

@@ -14,8 +14,8 @@ let PHARMACY_TOKEN = ''
 beforeAll(async () => {
   PHARMACY_TOKEN = await signin()
   // await database.sync({ force: true })
-  await request(app).post(API_PHARMACY).set('Authorization', PHARMACY_TOKEN).send(DEFAULT_PHARMACY)
-  await request(app).post(API_VENDOR).set('Authorization', PHARMACY_TOKEN).send(DEFAULT_VENDOR)
+  await request(app).post(API_PHARMACY).set('Authorization', `Bearer ${PHARMACY_TOKEN}`).send(DEFAULT_PHARMACY)
+  await request(app).post(API_VENDOR).set('Authorization', `Bearer ${PHARMACY_TOKEN}`).send(DEFAULT_VENDOR)
 })
 
 afterAll(async () => {
@@ -26,7 +26,7 @@ describe('Test routes pharmacies', () => {
   test('It should add a new pharmacy', async () => {
     const newPharmacy = { name: 'Farmácia dos pobres', email: 'pharmpoor@pharmacy.com', description: 'Aqui você acaba de falir', password: 'dfal7&Ufa11' }
 
-    const response = await request(app).post(API_PHARMACY).set('Authorization', PHARMACY_TOKEN).send(newPharmacy)
+    const response = await request(app).post(API_PHARMACY).set('Authorization', `Bearer ${PHARMACY_TOKEN}`).send(newPharmacy)
     expect(response.statusCode).toBe(201)
   })
 })

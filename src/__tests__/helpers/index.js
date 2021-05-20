@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const request = require('supertest')
-const app = require('../../src/app')
-const { sequelize } = require('../../src/database')
+const app = require('../../app')
+const sequelize = require('../../database')
 
 const SALT = 8
 const API_SIGNUP_PHARMACY = '/api/pharmacies'
