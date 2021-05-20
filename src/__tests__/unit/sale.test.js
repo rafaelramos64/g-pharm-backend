@@ -9,30 +9,28 @@ beforeAll(() => {
 })
 
 test('It should fetch all sales', async () => {
-  const users = [
-    { id: 1, price: 18.75, sale_date: new Date(), id_vendor: 1, id_medicines: [1, 4, 3] },
-    { id: 2, price: 99.75, sale_date: new Date(), id_vendor: 1, id_medicines: [6, 7, 4, 3] }
+  const sales = [
+    { id: 1, sale_price: 10.89, sale_date: '10/02/2021', pharmacy_id: 1, canceled: false, vendor_id: 1 },
+    { id: 1, sale_price: 6.89, sale_date: '90/02/2021', pharmacy_id: 1, canceled: false, vendor_id: 1 }
   ]
-  Sales.findAll.mockResolvedValue(users)
+  Sales.findAll.mockResolvedValue(sales)
   const response = await salesServices.getAll()
-  expect(response).toEqual(users)
+  expect(response).toEqual(sales)
 })
 
-test('It should insert an user', async () => {
-  const sale = { id: 3, price: 499.75, sale_date: new Date(), id_vendor: 8, id_medicines: [1, 10, 6, 7, 4, 3] }
+test('It should insert a sale', async () => {
+  const sale =
+    {
+      id: 3,
+      salePrice: 499.75,
+      saleDate: new Date(),
+      vendorId: 1,
+      medicines: [
+        { id: 1, amount: 2, valueUnit: 2.33 }
+      ]
+    }
 
   Sales.create.mockResolvedValue(sale)
   const response = await salesServices.create(sale)
   expect(response).toEqual(sale)
 })
-
-// test('It should delete an user', async () => {
-//   const user4 = {
-//     id: 4,
-//     name: 'fulano4',
-//     email: 'fulano4@email.com'
-//   }
-//   Users.destroy.mockResolvedValue(user4)
-//   const response = await usersServices.delete(user4.id)
-//   expect(response).toEqual(user4)
-// })
