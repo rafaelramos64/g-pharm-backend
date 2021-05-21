@@ -17,11 +17,7 @@ class VendorsServices {
       if (!pharmacy) {
         throw new Error('Pharmacy does not exists!')
       }
-    } catch (error) {
-      throw new Error(error)
-    }
 
-    try {
       const vendorAlreadyExists = await this.vendors.findAll({
         where: { email }
       })

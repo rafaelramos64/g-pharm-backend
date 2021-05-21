@@ -6,6 +6,7 @@ const { Vendors, Pharmacies } = require('../../../src/models')
 let vendorsServices
 let pharmaciesServices
 const dataPharm = {
+  id: 1,
   name: 'Farmácia dos Pobres',
   description: 'Aqui você acaba de falir!',
   email: 'pharmpobre6@pharmpoor.com',
@@ -14,6 +15,9 @@ const dataPharm = {
 beforeAll(async () => {
   vendorsServices = new VendorsServices(Vendors, Pharmacies)
   pharmaciesServices = new PharmaciesServices(Pharmacies)
+  Pharmacies.create.mockResolvedValue(dataPharm)
+  Pharmacies.findByPk.mockResolvedValue(dataPharm)
+  await pharmaciesServices.create(dataPharm.name, dataPharm.description, dataPharm.email, dataPharm.password)
 })
 
 test('It should fetch all vendors', async () => {
@@ -27,13 +31,12 @@ test('It should insert a vendor', async () => {
   const vendor3 = {
     id: 3,
     name: 'fulano3',
-    email: 'fulano3@email.com',
+    email: 'fulano10@email.com',
     password: 'fdl%jls$fjD9',
     pharmacy_id: 1
   }
   Vendors.create.mockResolvedValue(vendor3)
-  Pharmacies.create.mockResolvedValue(dataPharm)
-  await pharmaciesServices.create(dataPharm.name, dataPharm.description, dataPharm.email, dataPharm.password)
+  Vendors.findAll.mockResolvedValue(vendor3)
   const response = await vendorsServices.create(vendor3.name, vendor3.email, vendor3.password, vendor3.pharmacy_id)
   expect(response).toEqual(vendor3)
 })
