@@ -6,7 +6,8 @@ const salesServices = new SalesServices(Sales, Medicines, SalesMedicines, Vendor
 module.exports = {
   async create (request, response) {
     const { salePrice, medicines, saleDate } = request.body
-    const { pharmacyId, vendorId } = request.params
+    const { vendorId } = request.params
+    const pharmacyId = request.userId
 
     const schemaBody = yup.object().shape({
       saleDate: yup.date().required(),
@@ -19,7 +20,6 @@ module.exports = {
         })).required()
     })
     const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required(),
       vendorId: yup.number().required()
     })
 
@@ -46,17 +46,7 @@ module.exports = {
   },
 
   async getAll (request, response) {
-    const { pharmacyId } = request.params
-
-    const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required()
-    })
-
-    try {
-      await schemaParams.validate(request.params, { abortEarly: false })
-    } catch (error) {
-      return response.status(400).json(error.errors)
-    }
+    const pharmacyId = request.userId
 
     try {
       const sales = await salesServices.getAll(pharmacyId)
@@ -68,11 +58,11 @@ module.exports = {
   },
 
   async getById (request, response) {
-    const { saleId, pharmacyId } = request.params
+    const { saleId } = request.params
+    const pharmacyId = request.userId
 
     const schemaParams = yup.object().shape({
-      saleId: yup.number().required(),
-      pharmacyId: yup.number().required()
+      saleId: yup.number().required()
     })
 
     try {
@@ -92,17 +82,14 @@ module.exports = {
 
   async getByDate (request, response) {
     const { saleDate } = request.body
-    const { pharmacyId } = request.params
+    const pharmacyId = request.userId
+
     const schemaBody = yup.object().shape({
       saleDate: yup.date().required()
-    })
-    const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required()
     })
 
     try {
       await schemaBody.validate(request.body, { abortEarly: false })
-      await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.errors)
     }
@@ -117,11 +104,11 @@ module.exports = {
   },
 
   async cancelById (request, response) {
-    const { saleId, pharmacyId } = request.params
+    const { saleId } = request.params
+    const pharmacyId = request.userId
 
     const schemaParams = yup.object().shape({
-      saleId: yup.number().required(),
-      pharmacyId: yup.number().required()
+      saleId: yup.number().required()
     })
 
     try {

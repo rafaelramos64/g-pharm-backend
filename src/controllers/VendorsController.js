@@ -7,7 +7,8 @@ const vendorsServices = new VendorsServices(Vendors, Pharmacies)
 module.exports = {
   async save (request, response) {
     const { name, email, password } = request.body
-    const { pharmacyId } = request.params
+    const pharmacyId = request.userId
+    console.log(request.userId)
 
     const schemaBody = yup.object().shape({
       name: yup.string().required(),
@@ -18,13 +19,8 @@ module.exports = {
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/)
     })
 
-    const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required()
-    })
-
     try {
       await schemaBody.validate(request.body, { abortEarly: false })
-      await schemaParams.validate(request.params, { abortEarly: false })
     } catch (error) {
       return response.status(400).json({ message: error.errors })
     }
@@ -38,17 +34,7 @@ module.exports = {
   },
 
   async getAll (request, response) {
-    const { pharmacyId } = request.params
-
-    const schemaParams = yup.object().shape({
-      pharmacyId: yup.number().required()
-    })
-
-    try {
-      await schemaParams.validate(request.params, { abortEarly: false })
-    } catch (error) {
-      return response.status(400).json(error.errors)
-    }
+    const pharmacyId = request.userId
 
     try {
       const vendors = await vendorsServices.getAll(pharmacyId)
@@ -60,11 +46,11 @@ module.exports = {
   },
 
   async getById (request, response) {
-    const { vendorId, pharmacyId } = request.params
+    const { vendorId } = request.params
+    const pharmacyId = request.userId
 
     const schemaParams = yup.object().shape({
-      vendorId: yup.number().required(),
-      pharmacyId: yup.number().required()
+      vendorId: yup.number().required()
     })
 
     try {
@@ -83,11 +69,11 @@ module.exports = {
   },
 
   async deleteById (request, response) {
-    const { vendorId, pharmacyId } = request.params
+    const { vendorId } = request.params
+    const pharmacyId = request.userId
 
     const schemaParams = yup.object().shape({
-      vendorId: yup.number().required(),
-      pharmacyId: yup.number().required()
+      vendorId: yup.number().required()
     })
 
     try {
