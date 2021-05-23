@@ -106,6 +106,21 @@ module.exports = {
   async changeById (request, response) {
     const pharmacyId = request.userId
     const { medicineId } = request.params
+    const {
+      name,
+      price,
+      purchaseDate,
+      dueDate,
+      stock
+    } = request.body
+
+    const schemaBody = yup.object().shape({
+      name: yup.string().required(),
+      price: yup.number().required(),
+      purchaseDate: yup.date().required(),
+      dueDate: yup.date().required(),
+      stock: yup.number().required()
+    })
 
     const schemaParams = yup.object().shape({
       medicineId: yup.number().required()
@@ -113,12 +128,21 @@ module.exports = {
 
     try {
       await schemaParams.validate(request.params, { abortEarly: false })
+      await schemaBody.validate(request.body, { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.errors)
     }
 
     try {
-      const medicine = await medicinesServices.changeById(medicineId, pharmacyId)
+      const data = {
+        name,
+        price,
+        purchaseDate,
+        dueDate,
+        stock
+      }
+
+      const medicine = await medicinesServices.changeById(medicineId, pharmacyId, data)
 
       return response.status(201).json(medicine)
     } catch (error) {
